@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { -webkit-tap-highlight-color: transparent; }
+body { @apply font-sans text-stone-800 antialiased dark:text-stone-100; overscroll-behavior-y: none; }
+input[type='date'], input[type='time'] { min-height: 2.75rem; }
+.dark input[type='date']::-webkit-calendar-picker-indicator { filter: invert(1); }
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { position: absolute; left: 0; top: 0; }
+}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0b0b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="StitchBook" />
+    <meta name="description" content="StitchBook Pro — the fashion designer's shop in one phone: customers, measurements, orders, fabric tags, payments and order tracking." />
+    <title>StitchBook Pro</title>
+  </head>
+  <body class="bg-stone-50 dark:bg-ink-950">
+    <div id="root"></div>
+    <script>
+      setTimeout(function () {
+        var root = document.getElementById('root');
+        if (root && !root.children.length) {
+          root.innerHTML = '<div style="font-family:system-ui,sans-serif;max-width:420px;margin:15vh auto;padding:24px;text-align:center"><h1 style="font-size:20px">StitchBook didn\'t start</h1><p style="color:#555;font-size:14px">Tap below to clear the saved copy and try again. If it still doesn\'t open, update your browser.</p><button id="sb-fix" style="padding:12px 18px;border:0;border-radius:12px;background:#a8761c;color:#fff;font-weight:600">Clear &amp; reload</button></div>';
+          document.getElementById('sb-fix').onclick = function () {
+            var done = function () { location.replace(location.href.split('#')[0]); };
+            try {
+              var r = indexedDB.open('nyamebabaku-apps', 1);
+              r.onupgradeneeded = function () { r.result.createObjectStore('kv'); };
+              r.onsuccess = function () { try { var t = r.result.transaction('kv', 'readwrite'), s = t.objectStore('kv'); s.getAllKeys().onsuccess = function (e) { e.target.result.forEach(function (k) { if (String(k).indexOf('stitchbook-') === 0) s.delete(k); }); }; t.oncomplete = done; t.onerror = done; } catch (x) { done(); } };
+              r.onerror = done;
+            } catch (e) { done(); }
+          };
+        }
+      }, 9000);
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
